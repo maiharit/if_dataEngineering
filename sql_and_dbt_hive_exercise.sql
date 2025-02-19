@@ -163,8 +163,6 @@ create or replace table $database_name.employee (
 
 -- COMMAND ----------
 
--- When tring to use Primary key and foreign key had error: DeltaAnalysisException: Table constraints are only supported in Unity Catalog. So this is how I wanted it to be but cannot change the catalog and mine doesnt support many other options
-
 create or replace table $database_name.unit (
   unit_id integer not null generated always as identity, -- auto_increment
   unit_name string not null, 
@@ -179,10 +177,8 @@ create or replace table $database_name.employee (
   first_name string not null,
   last_name string not null,
   unit_id integer not null,
-  start_date date not null,
-  end_date date,
-  constraint pk_employee primary key employee_id,
-  constraint fk_unit_id foreign key (unit_id) references $database_name.unit(unit_id)
+  created_at timestamp default current_timestamp(),
+  updated timestamp default current_timestamp()
 )
 using delta
 partitioned by (unit_id);
